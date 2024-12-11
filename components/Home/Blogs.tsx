@@ -4,7 +4,7 @@ import { BlogCards } from '../Prebuild/cards'
 export default function Blogs() {
     return (
         <>
-            <div>
+            <div id='about'>
 
                 <div className='flex flex-col items-center text-center gap-3 mt-12 mb-1'>
                     <h1 className='text-[36px] font-bold '>Our Blogs</h1>

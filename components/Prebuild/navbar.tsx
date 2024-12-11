@@ -22,7 +22,7 @@ export default function Navbar({bgColor}:Navbar) {
                 <ul className='flex gap-8 lg:gap-16 lg:ml-[300px] font-semibold'>
                     <Link href={"/"}><li className='underline underline-offset-8 hover:no-underline'>Home</li></Link>
                     <Link href={"/shop"}><li className='underline underline-offset-8 hover:no-underline'>Shop</li></Link>
-                    <Link href={"/"}><li className='underline underline-offset-8 hover:no-underline'>About</li></Link>
+                    <Link href={"#about"}><li className='underline underline-offset-8 hover:no-underline'>About</li></Link>
                     <Link href={"/contact"}><li className='underline underline-offset-8 hover:no-underline'>Contact</li></Link>
                 </ul>
             </div>
@@ -30,8 +30,8 @@ export default function Navbar({bgColor}:Navbar) {
             <div className='flex gap-5 mt-8 '>
 
             <Link href={"/my-account"}><TbUserExclamation className='w-[25px] h-[20px]' /></Link>
-            <Link href={"/"}><CiSearch  className='w-[25px] h-[20px]' /></Link>
-            <Link href={"/"}><CiHeart  className='w-[25px] h-[20px]' /></Link>
+            <Link href={"https://www.google.com/"} target='_blank'><CiSearch  className='w-[25px] h-[20px]' /></Link>
+            <Link href={"https://www.facebook.com/profile.php?id=100051895934107"} target='_blank'><CiHeart  className='w-[25px] h-[20px]' /></Link>
             <Link href={"/cart"}><AiOutlineShoppingCart  className='w-[25px] h-[20px]' /></Link>
             <Link href={"/checkout"}><IoBagCheckOutline   className='w-[25px] h-[20px]' /></Link>
 
