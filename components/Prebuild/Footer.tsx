@@ -39,7 +39,7 @@ export default function Footer() {
             </div>
 
             <div className='mt-10 mb-5 border-t-2 pt-5 text-center'>
-                <h1>&copy; All right reserved 2024 @Abdul Rafay Khan</h1>
+                <h1>&copy; All right reserved 2025-26 @Abdul Mannan</h1>
             </div>
         </>
     )

@@ -12,12 +12,12 @@ export default function Home() {
     <>
       <div>
         <Navbar bgColor='bg-[#FBEBB5]' />
-        <Sofa/>
-        <Table/>
-        <TopPicks/>
-        <NewArrival/>
-        <Blogs/>
-        <Instagram/>
+        <Sofa />
+        <Table />
+        <TopPicks />
+        <NewArrival />
+        <Blogs />
+        <Instagram />
       </div>
     </>
   )
