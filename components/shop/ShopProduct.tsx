@@ -1,14 +1,13 @@
-'use client'; // Ensure this is a Client Component
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { ShopProductCard } from '../Prebuild/cards';
 import { client } from '@/sanity/lib/client';
-import { urlFor } from '@/sanity/lib/image';
-
+import { urlFor } from '@/sanity/lib/image'; // Ensure urlFor is imported correctly
 
 // Define TypeScript Interface
 interface Product {
-    id: number
+    id: string;
     name: string;
     price: number;
     category: string;
@@ -20,18 +19,31 @@ interface Product {
 
 // Fetch data from Sanity
 async function getdata(): Promise<Product[]> {
-    const fetchdata = await client.fetch(`*[_type == "product"]{
-        id,
-        name,
-        price,
-        category,
-        stocklevel,
-        imagePath,
-        description,
-        isFeaturedProduct,
-        "imageUrl": image.asset->url
-    }`);
-    return fetchdata;
+    try {
+        const fetchdata = await client.fetch(`*[_type == "product"]{
+            _id,
+            name,
+            price,
+            category,
+            stocklevel,
+            description,
+            isFeaturedProduct,
+            image,
+        }`);
+        return fetchdata.map((product: any) => ({
+            id: product._id,
+            name: product.name,
+            price: product.price,
+            category: product.category,
+            stocklevel: product.stocklevel,
+            description: product.description,
+            isFeaturedProduct: product.isFeaturedProduct,
+            imageUrl: product.image ? urlFor(product.image).url() : '/placeholder.jpg',
+        }));
+    } catch (error) {
+        console.error('Error fetching data from Sanity:', error);
+        return [];
+    }
 }
 
 // ShopProduct Component
@@ -55,16 +67,13 @@ export default function ShopProduct() {
         <>
             {/* Dynamic Product List */}
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-5 mb-10">
-                {data.map((val, index) => {
-                    const imageUrl = val.imageUrl || '/placeholder.jpg';
-                    return (
-                        <ShopProductCard
-                            key={index}
-                            image={imageUrl}
-                            head={val.name || 'Unknown Product'}
-                        />
-                    );
-                })}
+                {data.map((val) => (
+                    <ShopProductCard
+                        key={val.id} // Use unique id
+                        image={val.imageUrl}
+                        head={val.name || 'Unknown Product'}
+                    />
+                ))}
             </div>
 
             {/* Static Product Cards */}
