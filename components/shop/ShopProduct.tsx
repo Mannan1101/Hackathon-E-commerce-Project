@@ -26,7 +26,7 @@ interface SanityProduct {
     stocklevel: number;
     description: string;
     isFeaturedProduct: boolean;
-    image?: any;
+    image?: { asset: { _ref: string } }; // Properly type the image field
 }
 
 // Fetch data from Sanity
@@ -42,6 +42,7 @@ async function getdata(): Promise<Product[]> {
             isFeaturedProduct,
             image,
         }`);
+
         return fetchdata.map((product) => ({
             id: product._id,
             name: product.name,
@@ -50,7 +51,7 @@ async function getdata(): Promise<Product[]> {
             stocklevel: product.stocklevel,
             description: product.description,
             isFeaturedProduct: product.isFeaturedProduct,
-            imageUrl: product.image ? urlFor(product.image).url() : '/placeholder.jpg',
+            imageUrl: product.image ? urlFor(product.image.asset).url() : '/placeholder.jpg', // Generate image URL
         }));
     } catch (error) {
         console.error('Error fetching data from Sanity:', error);
