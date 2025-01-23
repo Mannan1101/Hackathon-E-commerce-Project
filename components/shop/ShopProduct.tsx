@@ -5,11 +5,30 @@ import { ShopProductCard } from '../Prebuild/cards';
 import { client } from '@/sanity/lib/client';
 import { urlFor } from '@/sanity/lib/image';
 
+
+// Define TypeScript Interface
+interface Product {
+    id: number
+    name: string;
+    price: number;
+    category: string;
+    stocklevel: number;
+    imageUrl: string;
+    description: string;
+    isFeaturedProduct: boolean;
+}
+
 // Fetch data from Sanity
-async function getdata() {
+async function getdata(): Promise<Product[]> {
     const fetchdata = await client.fetch(`*[_type == "product"]{
+        id,
         name,
         price,
+        category,
+        stocklevel,
+        imagePath,
+        description,
+        isFeaturedProduct,
         "imageUrl": image.asset->url
     }`);
     return fetchdata;
@@ -17,13 +36,19 @@ async function getdata() {
 
 // ShopProduct Component
 export default function ShopProduct() {
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<Product[]>([]);
 
     useEffect(() => {
-        getdata().then((fetchedData) => {
-            console.log('Fetched Data:', fetchedData); // Debugging output
-            setData(fetchedData);
-        });
+        async function fetchData() {
+            try {
+                const fetchedData = await getdata();
+                console.log('Fetched Data:', fetchedData); // Debugging output
+                setData(fetchedData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        fetchData();
     }, []);
 
     return (
@@ -31,11 +56,7 @@ export default function ShopProduct() {
             {/* Dynamic Product List */}
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-5 mb-10">
                 {data.map((val, index) => {
-                    // Ensure image URL is fully qualified with the base Sanity CDN URL
-                    const imageUrl = val.imageUrl
-                        ? `https://cdn.sanity.io/images/your_project_id/your_dataset/${val.imageUrl}` // Update with your Sanity Project ID and Dataset
-                        : '/placeholder.jpg'; // Fallback placeholder if no image
-
+                    const imageUrl = val.imageUrl || '/placeholder.jpg';
                     return (
                         <ShopProductCard
                             key={index}
@@ -52,7 +73,6 @@ export default function ShopProduct() {
                 <ShopProductCard image="/placeholder.jpg" head="Granite and table dining chair" />
                 <ShopProductCard image="/placeholder.jpg" head="Outdoor table and stool" />
                 <ShopProductCard image="/placeholder.jpg" head="Plain console teak mirror" />
-                {/* Add other static cards */}
             </div>
 
             {/* Pagination */}
