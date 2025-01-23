@@ -17,10 +17,22 @@ interface Product {
     isFeaturedProduct: boolean;
 }
 
+// Define Sanity Product Type
+interface SanityProduct {
+    _id: string;
+    name: string;
+    price: number;
+    category: string;
+    stocklevel: number;
+    description: string;
+    isFeaturedProduct: boolean;
+    image?: any;
+}
+
 // Fetch data from Sanity
 async function getdata(): Promise<Product[]> {
     try {
-        const fetchdata = await client.fetch(`*[_type == "product"]{
+        const fetchdata: SanityProduct[] = await client.fetch(`*[_type == "product"]{
             _id,
             name,
             price,
@@ -30,7 +42,7 @@ async function getdata(): Promise<Product[]> {
             isFeaturedProduct,
             image,
         }`);
-        return fetchdata.map((product: any) => ({
+        return fetchdata.map((product) => ({
             id: product._id,
             name: product.name,
             price: product.price,
